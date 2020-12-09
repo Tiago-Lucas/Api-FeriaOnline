@@ -1,23 +1,19 @@
 {
-  "name": "projetofeiraonline",
-  "version": "0.0.1",
-  "description": "Projeto de vendas em uma feira online",
+  "name": "api",
+  "version": "1.0.0",
+  "description": "Api de uma feira online",
   "main": "index.js",
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app/server.js",
-    "dev": "nodemon --watch app app/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon --watch app app/server.js"
   },
   "author": "Lucas Tiago",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.804.0",
     "body-parser": "^1.19.0",
-    "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "mongoose": "^5.10.18",
-    "multer": "^1.4.2",
-    "multer-s3": "^2.9.0"
+    "mongoose": "^5.10.16"
   },
   "devDependencies": {
     "nodemon": "^2.0.6"

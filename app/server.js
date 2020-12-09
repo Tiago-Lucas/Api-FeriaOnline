@@ -1,37 +1,28 @@
-import userRoute from '../app/routes/user/user';
-import productRoute from '../app/routes/product/product';
-import orderRoute from '../app/routes/order/order';
-import uploadRoute from '../app/routes/upload/upload';
-import path from 'path';
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require("body-parser"),
+app = express();
 
-const bodyParser = require("body-parser")
-const express = require('express')
-const app = express(),
-port =process.env.PORT || 3009
+port = process.env.PORT || 3009;
+mongoose.Promise = global.Promise;
+mongoose.connect( "mongodb+srv://BancoFeira:123@feira123.iqhyu.mongodb.net/feira123?retryWrites=true&w=majority",
+{
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
 
-app.use(bodyParser.urlencoded({extended:true}));
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "Erro ao se conectar com MongoDB!"));
+db.once("open", function(){
+    console.log("MongoDB connection OK!")
+})
+
+
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-app.use('/api/uploads',uploadRoute);
-app.use('/api/users', userRoute);
-app.use('/api/products', productRoute);
-app.use('/api/orders', orderRoute);
-app.get('/api/config/paypal', (req, res) => {
-  res.send(config.PAYPAL_CLIENT_ID);
-});
-app.use('/uploads', express.static(path.join(__dirname, '/../uploads')));
-app.use(express.static(path.join(__dirname, '/../frontend/build')));
-app.get('*', (req, res) => {
-  res.sendFile(path.join(`${__dirname}/../frontend/build/index.html`));
-});
 
-
-const mongoose =require('mongoose')
-mongoose.connect('mongodb+srv://BancoFeira:asd@123@feiraonline.rmphf.mongodb.net/FeiraOnline?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology:true })
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'))
-db.once('open', function() {
-    console.log(`Conectado com o Banco de Dados!`)
-}) 
+const userRoute = require('./routes/user/user-route')
+userRoute(app);
 
 app.listen(port);
-console.log('Servidor NodeJS rodando na porta: '+port);
+console.log('Server running at port ' + port);
